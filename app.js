@@ -27,12 +27,21 @@ app.post("/api/lights", (req, res, next) => {
 app.post("/api/switch", (req, res, next) => {
   const { body } = req;
   const { id } = body;
+
   if (id === undefined) {
     next({ status: 400, msg: "No ID included" });
   }
+  if (typeof id !== "number") {
+    next({ status: 400, msg: "ID must be an integer" });
+  }
+
   const lightToToggle = lights.find((light) => {
     return light.id === id;
   });
+
+  if (lightToToggle === undefined) {
+    next({ status: 404, msg: "ID not found" });
+  }
 
   lightToToggle.status = !lightToToggle.status;
 

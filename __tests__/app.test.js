@@ -53,4 +53,14 @@ describe("Errors", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("No ID included");
   });
+  test("POST /api/switch - should return 400 if id given is not a number", async () => {
+    const response = await request(app).post("/api/switch").send({ id: "0" });
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("ID must be an integer");
+  });
+  test("POST /api/switch - should return 404 if ID doesn't exist ", async () => {
+    const response = await request(app).post("/api/switch").send({ id: 10 });
+    expect(response.status).toBe(404);
+    expect(response.body.msg).toBe("ID not found");
+  });
 });
