@@ -27,6 +27,9 @@ app.post("/api/lights", (req, res, next) => {
 app.post("/api/switch", (req, res, next) => {
   const { body } = req;
   const { id } = body;
+  if (id === undefined) {
+    next({ status: 400, msg: "No ID included" });
+  }
   const lightToToggle = lights.find((light) => {
     return light.id === id;
   });

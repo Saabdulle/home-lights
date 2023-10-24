@@ -47,4 +47,10 @@ describe("Errors", () => {
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("No location included");
   });
+
+  test("POST /api/switch - should return 400 if no id given", async () => {
+    const response = await request(app).post("/api/switch").send({});
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("No ID included");
+  });
 });
