@@ -16,13 +16,27 @@ describe("Lights Service", () => {
     });
   });
 
-  test("POST /api/lights - should allow a new light to be added", async () => {
-    const newLight = { location: "Kitchen", status: false };
+  test("POST /api/lights - should allow a new light to be added with status as false as default", async () => {
+    const newLight = { location: "Kitchen" };
     const { body } = await request(app)
       .post("/api/lights")
       .send(newLight)
       .expect(201);
 
-    expect(body.light).toEqual({ id: 1, ...newLight });
+    expect(body.light).toEqual({ id: 1, ...newLight, status: false });
+  });
+
+  test("POST /api/switch - should allow to swap the boolean status for a light with each id", async () => {
+    const light = { id: 0 };
+    const { body } = await request(app)
+      .post("/api/switch")
+      .send(light)
+      .expect(202);
+
+    expect(body.light).toEqual({
+      id: 0,
+      location: "Living Room",
+      status: true,
+    });
   });
 });

@@ -15,11 +15,23 @@ app.get("/api/lights", (req, res) => {
 app.post("/api/lights", (req, res, next) => {
   const { body } = req;
 
-  const newLight = { id: newID++, ...body };
+  const newLight = { id: newID++, ...body, status: false };
 
   lights.push(newLight);
 
   res.status(201).send({ light: newLight });
+});
+
+app.post("/api/switch", (req, res, next) => {
+  const { body } = req;
+  const { id } = body;
+  const lightToToggle = lights.find((light) => {
+    return light.id === id;
+  });
+
+  lightToToggle.status = !lightToToggle.status;
+
+  res.status(202).send({ light: lightToToggle });
 });
 
 module.exports = app;
