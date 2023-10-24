@@ -40,3 +40,11 @@ describe("Lights Service", () => {
     });
   });
 });
+
+describe("Errors", () => {
+  test("POST /api/lights - should return 400 if no location given", async () => {
+    const response = await request(app).post("/api/lights").send({});
+    expect(response.status).toBe(400);
+    expect(response.body.msg).toBe("No location included");
+  });
+});

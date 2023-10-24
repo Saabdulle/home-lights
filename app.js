@@ -15,6 +15,8 @@ app.get("/api/lights", (req, res) => {
 app.post("/api/lights", (req, res, next) => {
   const { body } = req;
 
+  if (!body.location) next({ status: 400, msg: "No location included" });
+
   const newLight = { id: newID++, ...body, status: false };
 
   lights.push(newLight);
@@ -32,6 +34,18 @@ app.post("/api/switch", (req, res, next) => {
   lightToToggle.status = !lightToToggle.status;
 
   res.status(202).send({ light: lightToToggle });
+});
+
+app.use((err, req, res, next) => {
+  if (err.status && err.msg) {
+    res.status(err.status).send({ msg: err.msg });
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ msg: "Internal Server Error" });
 });
 
 module.exports = app;
