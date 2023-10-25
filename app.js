@@ -24,7 +24,7 @@ app.post("/api/lights", (req, res, next) => {
   res.status(201).send({ light: newLight });
 });
 
-app.post("/api/switch", (req, res, next) => {
+app.post("/api/lights/switch", (req, res, next) => {
   const { body } = req;
   const { id } = body;
 

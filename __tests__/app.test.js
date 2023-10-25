@@ -26,10 +26,10 @@ describe("Lights Service", () => {
     expect(body.light).toEqual({ id: 1, ...newLight, status: false });
   });
 
-  test("POST /api/switch - should allow to swap the boolean status for a light with each id", async () => {
+  test("POST /api/lights/switch - should allow to swap the boolean status for a light with each id", async () => {
     const light = { id: 0 };
     const { body } = await request(app)
-      .post("/api/switch")
+      .post("/api/lights/switch")
       .send(light)
       .expect(202);
 
@@ -48,18 +48,22 @@ describe("Errors", () => {
     expect(response.body.msg).toBe("No location included");
   });
 
-  test("POST /api/switch - should return 400 if no id given", async () => {
-    const response = await request(app).post("/api/switch").send({});
+  test("POST /api/lights/switch - should return 400 if no id given", async () => {
+    const response = await request(app).post("/api/lights/switch").send({});
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("No ID included");
   });
-  test("POST /api/switch - should return 400 if id given is not a number", async () => {
-    const response = await request(app).post("/api/switch").send({ id: "0" });
+  test("POST /api/lights/switch - should return 400 if id given is not a number", async () => {
+    const response = await request(app)
+      .post("/api/lights/switch")
+      .send({ id: "0" });
     expect(response.status).toBe(400);
     expect(response.body.msg).toBe("ID must be an integer");
   });
-  test("POST /api/switch - should return 404 if ID doesn't exist ", async () => {
-    const response = await request(app).post("/api/switch").send({ id: 10 });
+  test("POST /api/lights/switch - should return 404 if ID doesn't exist ", async () => {
+    const response = await request(app)
+      .post("/api/lights/switch")
+      .send({ id: 10 });
     expect(response.status).toBe(404);
     expect(response.body.msg).toBe("ID not found");
   });
