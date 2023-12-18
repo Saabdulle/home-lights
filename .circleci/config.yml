@@ -1,16 +1,16 @@
 version: 2.1
 
-jobs: 
+jobs:
   build-and-test:
     docker:
       - image: circleci/node:14
     working_directory: ~/home-lights
-    steps: 
+    steps:
       - checkout
       - run:
           name: Install Dependencies
           command: npm install
-      - run: 
+      - run:
           name: Run Tests
           command: npm test
           working_directory: ~/home-lights
@@ -18,17 +18,17 @@ jobs:
     working_directory: ~/home-lights
     docker:
       - image: cimg/aws:2023.05
-    steps: 
+    steps:
       - setup-remote-docker
       - aws-ecr/build-and-push-image:
           repo: lights
           tag: ${CIRCLE_BUILD_NUM}
           public-registry-alias: s9e3l8e0
           public-registry: true
-workflows: 
-    lights-pipeline: 
-      jobs:
-        - build-and-test
-        - build-image-and-push:
-            requires: 
-              - build-and-test
+workflows:
+  lights-pipeline:
+    jobs:
+      - build-and-test
+      - build-image-and-push:
+          requires:
+            - build-and-test
