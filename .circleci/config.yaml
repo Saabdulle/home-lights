@@ -32,5 +32,3 @@ workflows:
         - build-image-and-push:
             requires: 
               - build-and-test
-
-
